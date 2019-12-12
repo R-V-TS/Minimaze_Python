@@ -2,7 +2,7 @@ import numpy as np
 import scipy as sp
 from scipy import interpolate
 from matplotlib import pyplot as plt
-from utils import local_min, Dihot, parabol
+from utils import local_min, Dihot, parabol, Polinomial_min_square, Polinom_kord
 from Function import Function
 
 # Set start values
@@ -18,9 +18,10 @@ new_y = interpolate.interp1d(x, y, kind="cubic")(new_x)
 f = Function(new_x, new_y, (1/accuracy))
 
 plt.figure(1)
-#plt.plot(x, y, 'g-')
-plt.plot(new_x, new_y, 'b-')
-plt.title("Интерполированая функция")
+plt.plot(x, y, 'yo', label="Исходные точки")
+plt.plot(new_x, new_y, 'b-', label="Интерполяция спалайном")
+plt.legend()
+plt.show()
 
 # Find local minimum
 (h, xy_min) = local_min(f.f, 0, f.limits()[1]-1, 5*accuracy)
@@ -33,6 +34,8 @@ x_line = np.array([0, 0])
 y_line = np.array([0, 60])
 result_table = list()
 
+plt.figure(2)
+plt.plot(new_x, new_y, 'b-')
 #Print line local minimum
 for i in range(0, (h+1)*2, 2):
     x_line = [new_x[int(xy_min[i]/accuracy)], new_x[int(xy_min[i]/accuracy)]]
@@ -48,6 +51,7 @@ for i in range(0, (h+1)*2, 2):
     plt.plot(new_x[int(min_index/accuracy)], new_y[int(min_index/accuracy)], 'ro')
 
 plt.show()
+print(result_table)
 
 #print global minimum
 print(minimum_x_dihot)
@@ -57,13 +61,28 @@ print(min(minimum_y_dihot))
 parabol_min = list()
 min_y_parab = np.zeros((10, 1))
 min_x_parab = np.zeros((10, 1))
+plt.figure(2)
+plt.plot(new_x, new_y, 'b-')
 for i in range(0, 10):
-    point = abs((f.limits()[1])*accuracy * np.random.randn(1))
+    point = np.random.uniform(0, 59, 1) # равномерное распр испр
     if point > 60:
         point -= 60 - 1*accuracy
     (min_idx, iterix) = parabol(f.f, point, accuracy)
     min_x_parab[i] = min_idx
     min_y_parab[i] = f.f(min_idx)
     print(point, min_idx, f.f(min_idx), iterix)
+    plt.plot(min_idx, f.f(min_idx), "yo")
 
+plt.show()
 print(min(min_y_parab))
+
+poly_y = Polinomial_min_square(x, y)
+poly_y2 = Polinom_kord(x, y)
+plt.figure(2)
+plt.plot(x, y, 'yo', label="Исходные точки")
+plt.plot(x, poly_y, 'b-', label="Аналитический метод")
+plt.plot(x, poly_y2, 'g-', label="Цифровой метод")
+plt.legend()
+plt.title("Интерполированая функция")
+plt.show()
+

@@ -12,5 +12,8 @@ class Function:
     def f(self, idx):
         return self.y[int(idx*self.mn)]
 
+    def x(self, idx):
+        return self.x[int(idx * self.mn)]
+
     def limits(self):
         return [0, max(self.y.shape)/self.mn]
