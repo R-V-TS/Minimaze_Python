@@ -97,7 +97,7 @@ def Polinomial_min_square(x, y):
     poly_y = np.zeros(s)
     for i in range(0, s[0]):
         poly_y[i] = C[0] + C[1]*x[i] + C[2]*(x[i]**2)
-    return poly_y
+    return (C, poly_y)
 
 def calc_fun_min(a, x, y):
     s = np.shape(x)
@@ -106,9 +106,9 @@ def calc_fun_min(a, x, y):
         E[i] = (a[0] + a[1]*x[i] + a[2]*(x[i]**2) - y[i])**2
     return np.mean(E)
 
-def Polinom_kord(x, y, E = 1e-4):
+def Polinom_kord(x, y, manual_val, E = 1e-4):
     s = np.shape(x)
-    A_val = np.zeros((3, 1), dtype=float)
+    A_val = np.array(manual_val, dtype=float)
     h = np.array([1, 1, 1], dtype=float)
     an = np.array([0, 0, 0], dtype=float)
     
@@ -127,9 +127,13 @@ def Polinom_kord(x, y, E = 1e-4):
             else:
                 an[i] = A_val[i]
 
-        if an[0] == A_val[0] and an[1] == A_val[1] and an[2] == A_val[2]:
+        if an[0] == A_val[0]:
             h[0] *= 0.5
+
+        if an[1] == A_val[1]:
             h[1] *= 0.5
+
+        if an[2] == A_val[2]:
             h[2] *= 0.5
 
         A_val = an.copy()

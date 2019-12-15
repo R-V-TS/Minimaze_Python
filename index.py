@@ -8,7 +8,7 @@ from Function import Function
 # Set start values
 accuracy = 0.1
 x = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
-y = [12.23, 10.73, 11.62, 9.61, 11.76, 11.90, 14.46, 16.34, 14.30, 23.36, 27.69, 35.01, 59.45]
+y = [7.11, 6.89, 7.84, 7.67, 6.61, 7.06, 7.09, 6.85, 6.58, 6.71, 8.56, 8.49, 9.88]
 
 # Interpolation cubic splain
 new_x = np.linspace(min(x), max(x), max(x)*(1/accuracy))
@@ -76,8 +76,9 @@ for i in range(0, 10):
 plt.show()
 print(min(min_y_parab))
 
-poly_y = Polinomial_min_square(x, y)
-poly_y2 = Polinom_kord(x, y)
+(C, poly_y) = Polinomial_min_square(x, y)
+C *= .9
+poly_y2 = Polinom_kord(x, y, C)
 plt.figure(2)
 plt.plot(x, y, 'yo', label="Исходные точки")
 plt.plot(x, poly_y, 'b-', label="Аналитический метод")
